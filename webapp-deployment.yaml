@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nocommerce
+  name: grandnode
 spec:
   selector:
     matchLabels:
-      run: nocommerce
+      run: grandnode
   replicas: 1
   template:
     metadata:
       labels:
-        run: nocommerce
+        run: grandnode
     spec:
       containers:
-      - name: nocommerce
+      - name: grandnode
         image: gcr.io/PROJECT_ID/IMAGE:TAG
         ports:
         - containerPort: 80
