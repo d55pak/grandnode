@@ -5,7 +5,7 @@ import pytest
 
 
 #target_url = "${{ secrets.EXT_IP }}/install"
-target_url = "http://34.67.38.135/install"
+target_url = "http://34.67.38.135/"
 
 print(" Running the Selenium Script ")
 
@@ -21,9 +21,9 @@ def get_driver():
 @pytest.mark.usefixtures("get_driver")
 def test_data():
     driver.get(target_url)
-    element = driver.find_element_by_tag_name("h1")
+    element = driver.find_element_by_tag_name("h3")
     print("########## Checking for grandnode installation ##########")
-    assert element.text == "Installing grandnode..."
+    assert element.text == "CompanyInformation"
 
 #@pytest.mark.usefixtures("get_driver")
 #def test_body():
