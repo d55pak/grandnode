@@ -116,7 +116,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v5
         name: Build & push Docker image
         with:
-          image: test11113423423/devsecops
+          image: test11113423423/grandnode
           tags: 'v1, latest'
           registry: docker.io
           dockerfile: ./Dockerfile
