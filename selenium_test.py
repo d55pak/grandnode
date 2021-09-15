@@ -23,7 +23,7 @@ def test_data():
     driver.get(target_url)
     element = driver.find_element_by_tag_name("h1")
     print("########## Checking for grandnode installation ##########")
-    assert element.text == "grandnode installation"
+    assert element.text == "Installing grandnode..."
 
 #@pytest.mark.usefixtures("get_driver")
 #def test_body():
