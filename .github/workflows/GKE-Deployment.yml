@@ -17,7 +17,7 @@ name: Build and Deploy to GKE
 on:
   workflow_run:
     workflows: ["DevSecOps"]
-    branches: [develop]
+    branches: [developer]
     types: 
       - completed
   workflow_dispatch: null    
@@ -25,7 +25,7 @@ on:
       
 #  push:
 #    branches:
-#      - develop
+#      - developer
 #  pull_request:
 #    branches:
 #      - developer
@@ -35,8 +35,8 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: devsecopsassign    # TODO: update to cluster name
   GKE_ZONE: us-central1-c    # TODO: update to cluster zone
-  DEPLOYMENT_NAME: nocommerce # TODO: update to deployment name
-  IMAGE: devsecops
+  DEPLOYMENT_NAME: grandnode # TODO: update to deployment name
+  IMAGE: grandnode
 
 jobs:
   setup-build-publish-deploy:
