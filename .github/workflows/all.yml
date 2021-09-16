@@ -10,34 +10,31 @@ name: DevSecOps
 
 jobs:
 
-  Auto_Code_Review:
-    name: Code-Review-DevSkim
+  check-quality:
     runs-on: ubuntu-latest
+    name: checking  code quality
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Check code meets quality standards
+      id: code-inspector
+      uses: codeinspectorio/github-action@master
       with:
-        fetch-depth: 0
-    
-    - name: DevSkim
-      uses: microsoft/DevSkim-Action@v1
-      with:
-        # The sub directory of the repository root to scan. Repository root used by default.
-        # Optionally scan the contents of archives.
-        should-scan-archives: false
-        # The filename for the output.
-        output-filename: devskim-results.sarif
-    
-    - name: Upload Sarif
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: devskim-results.sarif
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
+        code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
+        min_quality_grade: 'WARNING'
+        min_quality_score: '50'
+        max_defects_rate: '0.0001'
+        max_complex_functions_rate: '0.0001'
+        max_long_functions_rate: '0.0001'
+        project_name: ''
+        max_timeout_sec: '600'
+
 
   Secrets_Scan:
     name: SecretsScan-GitGuardian
     runs-on: ubuntu-latest
     needs:
-      - Auto_Code_Review
+      - check-quality
     steps:
       - name: Checkout
         uses: actions/checkout@v2
