@@ -14,17 +14,24 @@ jobs:
     name: Code-Review-DevSkim
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - uses: microsoft/DevSkim-Action@v1
-      - uses: github/codeql-action/upload-sarif@v1
-        with:
-         sarif_file: devskim-results.sarif
-      - name: artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: DevSkim-artifact
-          path: ${{ github.workspace }}/**/devskim-results*
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: DevSkim
+      uses: microsoft/DevSkim-Action@v1
+      with:
+        # The sub directory of the repository root to scan. Repository root used by default.
+        # Optionally scan the contents of archives.
+        should-scan-archives: false
+        # The filename for the output.
+        output-filename: devskim-results.sarif
+    
+    - name: Upload Sarif
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: devskim-results.sarif
 
   Secrets_Scan:
     name: SecretsScan-GitGuardian
