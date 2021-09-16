@@ -10,30 +10,27 @@ name: DevSecOps
 
 jobs:
 
-  check-quality:
+  Auto_Code_Review:
+    name: Code-Review-DevSkim
     runs-on: ubuntu-latest
-    name: A job to check my code quality
     steps:
-    - name: Check code meets quality standards
-      id: code-inspector
-      uses: codeinspectorio/github-action@master
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        code_inspector_access_key: ${{ secrets.CODE_INSPECTOR_ACCESS_KEY }}
-        code_inspector_secret_key: ${{ secrets.CODE_INSPECTOR_SECRET_KEY }}
-        min_quality_grade: 'WARNING'
-        min_quality_score: '50'
-        max_defects_rate: '0.0001'
-        max_complex_functions_rate: '0.0001'
-        max_long_functions_rate: '0.0001'
-        project_name: ''
-        max_timeout_sec: '600'
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: microsoft/DevSkim-Action@v1
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+         sarif_file: devskim-results.sarif
+      - name: artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: DevSkim-artifact
+          path: ${{ github.workspace }}/**/devskim-results*
 
   Secrets_Scan:
     name: SecretsScan-GitGuardian
     runs-on: ubuntu-latest
     needs:
-      - check-quality
+      - Auto_Code_Review
     steps:
       - name: Checkout
         uses: actions/checkout@v2
